@@ -12,14 +12,21 @@ lint: install-lint-deps ## Lint Go code
 	fi
 
 .PHONY: install-protoc
+
 install-protoc:
+	$(eval PB_REL=https://github.com/protocolbuffers/protobuf/releases)
+	curl -LO $(PB_REL)/download/v3.15.8/protoc-3.15.8-linux-x86_64.zip && \
+	unzip protoc-3.15.8-linux-x86_64.zip -d $(HOME)/.local
+	#export PATH="${PATH}:${HOME}/.local/bin"
+
+install-protoc-gen:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest 
 
-gen: install-protoc
+gen:
 	protoc -I=api --go_out=. movie.proto
 
-gen-grpc: install-protoc
+gen-grpc:
 	protoc -I=api --go_out=. --go-grpc_out=. movie.proto
 
 .PHONY: gen-mock
