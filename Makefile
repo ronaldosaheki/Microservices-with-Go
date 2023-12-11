@@ -42,3 +42,7 @@ install-mockgen:
 create-metadata-mock:
 	mkdir -p gen/mock/metadata/repository/
 	mockgen -package=repository -source=metadata/internal/controller/metadata/controller.go > gen/mock/metadata/repository/repository.go
+
+
+integration-test:
+	go run test/integration/*.go
